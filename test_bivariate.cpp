@@ -46,10 +46,14 @@ int main(){
     // this creates the object
     bivariate_lin_seq bls{num,den,2,2};
 
-    long D,N;
-    long DD = 1000; 
-    long NN = 1000;
-    long m = 5;
+    long D,N,DD,NN,m;
+    cout << "Enter x-coordinate of index to center around: ";
+    cin >> NN;
+    cout << "Enter y-coordinate of index to center around: ";
+    cin >> DD;
+    cout << "Enter the index range to compute: ";
+    cin >> m;
+    cout << endl;
 
     printf("Terms (%ld,%ld) to (%ld,%ld):\n\n",NN-m,DD-m,NN+m,DD+m);
 
