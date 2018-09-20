@@ -6,11 +6,9 @@ NTL_CLIENT
 
 int main(){
     // set this to be the prime you want to work over
-    zz_p::init(2013265921);
+    long p = 2013265921;
+    zz_p::init(p);
     SetNumThreads(4);
-    
-    // D should be less than the char of the field due to interpolation
-    long D = 8000;
     
     // this are "bivariate" polynomials
     Vec<zz_pX> num;
@@ -47,13 +45,26 @@ int main(){
     
     // this creates the object
     bivariate_lin_seq bls{num,den,2,2};
-    
+
+    long D,N;
+    long DD = 1000; 
+    long NN = 1000;
+    long m = 5;
+
+    printf("Terms (%ld,%ld) to (%ld,%ld):\n\n",NN-m,DD-m,NN+m,DD+m);
+
     zz_pX n,d; // this is num/den for the output
-    double t = GetTime();
-    bls.find_row(n,d,D);
-    cout << "time: " << GetTime() - t << endl;
-    //cout << "D: " << D << endl;
-    //cout << "n: " << n << endl;
-    //cout << "d: " << d << endl;
+    for(D=DD-m; D < DD+m+1; D++){
+        bls.find_row(n,d,D);
+
+        Vec<zz_p> init = get_init(deg(d), n, d);
+        Vec<zz_p> coeffs;
+        coeffs.SetLength(2*m+1);
+
+        for(N=NN-m; N < NN+m+1; N++){
+            coeffs[N-NN+m] = get_elem(N, reverse(d), init);
+        }
+        cout << coeffs << endl;
+    }
     
 }
